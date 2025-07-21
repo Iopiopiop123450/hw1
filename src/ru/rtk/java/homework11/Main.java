@@ -1,6 +1,6 @@
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-package ru.rtk.java.homework1;
+package ru.rtk.java.homework11;
 
 import java.util.Scanner;
 
