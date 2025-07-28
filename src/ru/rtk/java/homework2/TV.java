@@ -1,7 +1,5 @@
 package ru.rtk.java.homework2;
 
-import java.sql.SQLOutput;
-
 public class TV {
     private int size;
     private String colour;
