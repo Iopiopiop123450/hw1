@@ -1,16 +1,15 @@
 package attestation01;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.Objects;
 
 public class Person {
     private String name;
     private int money;
-    private List<Product> bag;
+    private Product[] bag;
+    private int size;
 
-    public Person (String name, int money) {
+    public Person(String name, int money) {
         if (name == null || name.length() < 3) {
             throw new IllegalArgumentException("Имя должно быть не менее 3 символов");
         }
@@ -21,19 +20,12 @@ public class Person {
 
         this.name = name;
         this.money = money;
-        this.bag = new ArrayList<>();
+        this.bag = new Product[10];
+        this.size = 0;
     }
 
     public String getName() {
         return name;
-    }
-
-    public int getMoney() {
-        return money;
-    }
-
-    public List<Product> getBag() {
-        return new ArrayList<>(bag);
     }
 
     public void setName(String name) {
@@ -43,6 +35,10 @@ public class Person {
         this.name = name;
     }
 
+    public int getMoney() {
+        return money;
+    }
+
     public void setMoney(int money) {
         if (money < 0) {
             throw new IllegalArgumentException("Деньги не могут быть отрицательным числом");
@@ -50,29 +46,33 @@ public class Person {
         this.money = money;
     }
 
+    public int getBagSize() {
+        return size;
+    }
+
+    public Product[] getBag() {
+        Product[] result = new Product[size];
+        System.arraycopy(bag, 0, result, 0, size);
+        return result;
+    }
+
     public boolean buyProduct(Product product) {
-        if(product ==null) {
-        throw new IllegalArgumentException("Продукт не может быть пустым");
-    }
-        if(money >=product.getPrice()) {
-        bag.add(product);
-        money -= product.getPrice();
-        return true;
-    }
+        if (product == null) {
+            throw new IllegalArgumentException("Продукт не может быть пустым");
+        }
+        if (money >= product.getPrice()) {
+            if (size >= bag.length) {
+                Product[] newBag = new Product[bag.length + 2];
+                System.arraycopy(bag, 0, newBag, 0, bag.length);
+                bag = newBag;
+            }
+
+            bag[size] = product;
+            size++;
+            money -= product.getPrice();
+            return true;
+        }
         return false;
-}
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (o == null || getClass() != o.getClass()) return false;
-        Person person = (Person) o;
-        return money == person.money && Objects.equals(name, person.name) && Objects.equals(bag, person.bag);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, money, bag);
     }
 
     @Override
@@ -80,7 +80,23 @@ public class Person {
         return "Person{" +
                 "name='" + name + '\'' +
                 ", money=" + money +
-                ", bag=" + bag +
+                ", bag=" + Arrays.toString(bag) +
+                ", size=" + size +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return money == person.money && Objects.equals(name, person.name) && Objects.deepEquals(bag, person.bag);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, money, Arrays.hashCode(bag));
+    }
 }
+
+
+
