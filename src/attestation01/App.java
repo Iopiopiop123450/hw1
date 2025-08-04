@@ -14,6 +14,25 @@ public class App {
         customers = new Person[10];
         products = new Product[10];
 
+        // Ввод покупателей
+        System.out.println("\nВведите данные о покупателях (имя=сумма): Павел Андреевич = 10000; Анна Петровна = 2000; Борис = 10");
+        String personsInput = scanner.nextLine();
+        String[] personEntries = personsInput.split(";");
+        for (int i = 0; i < personEntries.length; i++) {
+            String entry = personEntries[i];
+            String[] parts = entry.split("=");
+
+            if (parts.length != 2) {
+                System.out.println("Неверный формат ввода. Попробуйте еще раз.");
+                continue;
+            }
+
+            String name = parts[0].trim();
+            int money = getValidPrice(parts[1]);
+
+            customers[i] = new Person(name, money);
+            // System.out.println(Arrays.toString(customers));
+        }
 
         // Ввод продуктов
         System.out.println("Введите данные о продуктах (формат: Хлеб = 40; Молоко = 60; Торт = 1000; Кофе растворимый = 879; Масло = 150):");
@@ -30,34 +49,10 @@ public class App {
             String name = parts[0].trim();
             int price = getValidPrice(parts[1]);
             products[i] = new Product(name, price);
-            System.out.println(Arrays.toString(products));
-
-        }
-
-
-
-        // Ввод покупателей
-        System.out.println("\nВведите данные о покупателях (имя=сумма): Павел Андреевич = 10000; Анна Петровна = 2000; Борис = 10");
-            String personsInput = scanner.nextLine();
-            String[] personEntries = personsInput.split(";");
-            for (int i = 0; i < personEntries.length; i++) {
-                String entry = personEntries[i];
-                String[] parts = entry.split("=");
-
-            if (parts.length != 2) {
-                System.out.println("Неверный формат ввода. Попробуйте еще раз.");
-                continue;
-            }
-
-            String name = parts[0].trim();
-            int money = getValidPrice(parts[1]);
-
-            customers[i] = new Person(name, money);
-            System.out.println(Arrays.toString(customers));
         }
 
         // Процесс покупок
-        System.out.println("\nНачинаем покупки. Введите данные в формате Покупатель - Продукт или END для завершения:");
+        System.out.println("\nНачинаем покупки. Введите данные в формате: Покупатель - Продукт или END для завершения:");
         boolean shopping = true;
         int currentCustomer = 0;
 
@@ -75,10 +70,8 @@ public class App {
             String[] inputEntries = input.split("-");
             String customerName = inputEntries[0].trim();
             String productName = inputEntries[1].trim();
-            System.out.println(customerName + " " + productName);
 
             int customerIndex = findCustomerIndex(customerName);
-            System.out.println(customerIndex);
 
             currentCustomer = customerIndex;
 
@@ -86,7 +79,7 @@ public class App {
 
             if (selectedProduct != null) {
                 if (customers[currentCustomer].buyProduct(selectedProduct)) {
-                    System.out.println("Покупка успешна! " + selectedProduct.getName() + " добавлен в корзину.");
+                    System.out.println(customers[currentCustomer].getName() + " купил(а) " + selectedProduct.getName());
                 } else {
                     System.out.println(customers[currentCustomer].getName() +
                             " не может позволить себе " + selectedProduct.getName());
@@ -110,7 +103,16 @@ public class App {
             if (customer.getBagSize() == 0) {
                 System.out.println(customer.getName() + " - Ничего не куплено");
             } else {
-                System.out.println(customer);
+                StringBuilder purchased = new StringBuilder();
+                Product[] products = customer.getBag();
+
+                for (int i = 0; i < products.length; i++) {
+                    if (i>0) {
+                        purchased.append(", ");
+                    }
+                    purchased.append(products[i].getName());
+                }
+                System.out.println(customer.getName() + "-" + purchased.toString());
             }
         }
 
