@@ -1,6 +1,5 @@
 package attestation01;
 
-import java.util.Arrays;
 import java.util.Scanner;
 
 public class App {
@@ -15,44 +14,50 @@ public class App {
         products = new Product[10];
 
         // Ввод покупателей
-        System.out.println("\nВведите данные о покупателях (имя=сумма): Павел Андреевич = 10000; Анна Петровна = 2000; Борис = 10");
-        String personsInput = scanner.nextLine();
-        String[] personEntries = personsInput.split(";");
-        for (int i = 0; i < personEntries.length; i++) {
-            String entry = personEntries[i];
-            String[] parts = entry.split("=");
+                System.out.println("\nВведите данные о покупателях (имя=сумма): Павел Андреевич = 10000; Анна Петровна = 2000; Борис = 10");
+                String personsInput = scanner.nextLine();
+                String[] personEntries = personsInput.split(";");
+                for (int i = 0; i < personEntries.length; i++) {
+                    String entry = personEntries[i];
+                    String[] parts = entry.split("=");
 
-            if (parts.length != 2) {
-                System.out.println("Неверный формат ввода. Попробуйте еще раз.");
-                continue;
-            }
+                    if (parts.length != 2) {
+                        System.out.println("Неверный формат ввода. Попробуйте еще раз.");
+                        continue;
+                    }
 
-            String name = parts[0].trim();
-            int money = getValidPrice(parts[1]);
+                    String name = parts[0].trim();
 
-            customers[i] = new Person(name, money);
-            // System.out.println(Arrays.toString(customers));
-        }
+                    if (name == null || name.length() < 3) {
+                        System.out.println("Имя должно быть не менее 3 символов");
+                        continue;
+                    }
+
+                    int money = getValidPrice(parts[1]);
+
+                    customers[i] = new Person(name, money);
+                }
+
 
         // Ввод продуктов
-        System.out.println("Введите данные о продуктах (формат: Хлеб = 40; Молоко = 60; Торт = 1000; Кофе растворимый = 879; Масло = 150):");
-        String productsInput = scanner.nextLine();
+            System.out.println("Введите данные о продуктах (формат: Хлеб = 40; Молоко = 60; Торт = 1000; Кофе растворимый = 879; Масло = 150):");
+            String productsInput = scanner.nextLine();
 
-        String[] productEntries = productsInput.split(";");
-        for (int i = 0; i < productEntries.length; i++) {
-            String entry = productEntries[i];
-            String[] parts = entry.split("=");
-            if (parts.length != 2) {
-                System.out.println("Неверный формат ввода. Попробуйте еще раз.");
-                continue;
+            String[] productEntries = productsInput.split(";");
+            for (int i = 0; i < productEntries.length; i++) {
+                String entry = productEntries[i];
+                String[] parts = entry.split("=");
+                if (parts.length != 2) {
+                    System.out.println("Неверный формат ввода. Попробуйте еще раз.");
+                    continue;
+                }
+                String name = parts[0].trim();
+                int price = getValidPrice(parts[1]);
+                products[i] = new Product(name, price);
             }
-            String name = parts[0].trim();
-            int price = getValidPrice(parts[1]);
-            products[i] = new Product(name, price);
-        }
 
         // Процесс покупок
-        System.out.println("\nНачинаем покупки. Введите данные в формате: Покупатель - Продукт или END для завершения:");
+        System.out.println("\nНачинаем покупки. Введите данные в формате: Покупатель - Продукт или введите END для завершения:");
         boolean shopping = true;
         int currentCustomer = 0;
 
@@ -71,9 +76,7 @@ public class App {
             String customerName = inputEntries[0].trim();
             String productName = inputEntries[1].trim();
 
-            int customerIndex = findCustomerIndex(customerName);
-
-            currentCustomer = customerIndex;
+           currentCustomer = findCustomerIndex(customerName);
 
             Product selectedProduct = findProduct(products, productName);
 
@@ -130,6 +133,7 @@ public class App {
         } catch (NumberFormatException e) {
             System.out.println("Некорректная сумма! Должен быть положительный целый номер.");
             price = -1;
+            System.exit(0);
         }
         return price;
     }

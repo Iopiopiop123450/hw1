@@ -7,12 +7,6 @@ public class Product {
     private int price;
 
     public Product(String name, int price) {
-        if (name == null) {
-            throw new IllegalArgumentException("Название продукта не может быть пустым");
-        }
-        if (price < 0) {
-            throw new IllegalArgumentException("Цена не может быть меньше нуля");
-        }
         this.name = name;
         this.price = price;
     }
@@ -22,9 +16,6 @@ public class Product {
     }
 
     public void setName(String name) {
-        if (name == null) {
-            throw new IllegalArgumentException("Название продукта не может быть пустым");
-        }
         this.name = name;
     }
 
@@ -33,9 +24,6 @@ public class Product {
     }
 
     public void setPrice(int price) {
-        if (price < 0) {
-            throw new IllegalArgumentException("Цена не может быть меньше нуля");
-        }
         this.price = price;
     }
 
