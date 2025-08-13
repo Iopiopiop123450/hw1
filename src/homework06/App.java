@@ -38,7 +38,7 @@ public class App {
         System.out.println("Текущий канал: " + tv.getCurrentChannel().getName());
 
         for (Programm programm : tv.getCurrentChannel().getProgramms()) {
-            System.out.println("Программа: " + programm.getName() + " рейтинг: " + programm.getRating() + " зрители: " + programm.getViewers());
+            System.out.println("Программа: " + programm.getName() + ",рейтинг: " + programm.getRating() + ",зрители: " + programm.getViewers());
         }
 
     }
