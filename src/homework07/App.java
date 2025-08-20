@@ -43,7 +43,7 @@ public class App {
                 }
 
 
-        // Ввод продуктов
+        // Ввод продуктов без скидки
             System.out.println("Введите данные о продуктах (формат: Хлеб = 40; Молоко = 60; Торт = 1000; Кофе растворимый = 879; Масло = 150):");
             String productsInput = scanner.nextLine();
 
@@ -66,7 +66,7 @@ public class App {
                 products[i] = new Product(name, price);
             }
 
-        // Ввод скидки
+        // Ввод продуктов со скидкой
         boolean discounts = true;
             boolean check = true;
             int discountIndex = 0;
@@ -86,7 +86,7 @@ public class App {
                     break;
                 }
             }
-            if (check == false) {
+            if (!check) {
                 continue;
             }
 
@@ -99,7 +99,8 @@ public class App {
             int validPrice = getValidPrice(parts[1]);
             double discountedPrice = validPrice * (1 - discount);
             int price = (int) Math.round(discountedPrice);
-            if (isValidDiscountedPrice(price) == false) {
+            if (!isValidDiscountedPrice(price)) {
+                System.out.println("Если стоимость продукта или скидочного продукта 0 или отрицательная, то такая цена неправильная");
                 continue;
             }
 
@@ -228,7 +229,6 @@ public class App {
 
     public static boolean isValidDiscountedPrice (int price) {
         if (price <= 0) {
-            System.out.println("Цена не должна быть меньше нуля или равняться нулю");
             return false;
         }
         return  true;
